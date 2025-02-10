@@ -51,12 +51,17 @@ public class GameStateManager : MonoBehaviour
             ChangeState(GameState.MainMenu_State);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && currentState != GameState.MainMenu_State)
         {
-            if (currentState != GameState.MainMenu_State)
+            if (currentState != GameState.Paused_State)
             {
                 ChangeState(GameState.Paused_State);
             }
+            else
+            {
+                ChangeState(GameState.Gameplay_State);
+            }
+            
         }
 
         if (Input.GetKeyDown(KeyCode.G))
@@ -79,11 +84,13 @@ public class GameStateManager : MonoBehaviour
             case GameState.Gameplay_State:
                 Debug.Log("Switched to Gameplay State");
                 // TODO: Add logic for starting/resuming the game (e.g., enable player movement)
+                Time.timeScale = 1f;
                 break;
 
             case GameState.Paused_State:
                 Debug.Log("Switched to Paused State");
                 // TODO: Add logic for pausing the game (e.g., stop player movement, show pause menu)
+                Time.timeScale = 0f;
                 break;
         }
     }

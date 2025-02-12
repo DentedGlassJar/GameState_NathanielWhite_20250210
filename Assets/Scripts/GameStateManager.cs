@@ -12,9 +12,12 @@ public class GameStateManager : MonoBehaviour
         Paused_State      // The game is paused
     }
 
-
     // Property to store the current game state, accessible publicly but modifiable only within this class
     public GameState currentState { get; private set; }
+
+    public GameObject mainMenuUI;
+    public GameObject gamePlayUI;
+    public GameObject pausedUI;
 
     // Debugging variables to store the current and last game state as strings for easier debugging in the Inspector
     [SerializeField] private string currentStateDebug;
@@ -46,11 +49,6 @@ public class GameStateManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            ChangeState(GameState.MainMenu_State);
-        }
-
         if (Input.GetKeyDown(KeyCode.Escape) && currentState != GameState.MainMenu_State)
         {
             if (currentState != GameState.Paused_State)
@@ -63,22 +61,45 @@ public class GameStateManager : MonoBehaviour
             }
             
         }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            ChangeState(GameState.Gameplay_State);
-        }
     }
 
 
     // Handles any specific actions that need to occur when switching to a new state
     private void HandleStateChange(GameState state)
     {
+        if (currentState == GameState.MainMenu_State)
+        {
+            mainMenuUI.SetActive(true);
+        }
+        else
+        {
+            mainMenuUI.SetActive(false);
+        }
+
+        if (currentState == GameState.Gameplay_State)
+        {
+            gamePlayUI.SetActive(true);
+        }
+        else
+        {
+            gamePlayUI.SetActive(false);
+        }
+
+        if (currentState == GameState.Paused_State)
+        {
+            pausedUI.SetActive(true);
+        }
+        else
+        {
+            pausedUI.SetActive(false);
+        }
+
         switch (state)
         {
             case GameState.MainMenu_State:
                 Debug.Log("Switched to MainMenu State");
                 // TODO: Add logic for when the game enters the Main Menu (e.g., show UI)
+                Time.timeScale = 0f;
                 break;
 
             case GameState.Gameplay_State:
@@ -94,7 +115,4 @@ public class GameStateManager : MonoBehaviour
                 break;
         }
     }
-
-
-
 }
